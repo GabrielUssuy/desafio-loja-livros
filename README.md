@@ -1,5 +1,16 @@
-# Faça um fork desse repositório
+# Cadastro de um novo autor
 
-Este é um repositório vazio de propósito. A ideia é que você faça um fork para que eu, Alberto, possa usar o github para ter a chance de olhar vários dos códigos produzido por você e seus(as) colegas da Jornada Dev Eficiente :). 
+É necessário cadastrar um novo autor no sistema. Todo autor tem um nome, email e uma descrição. Também queremos saber o instante exato que ele foi registrado.
 
-Durante cada uma das seis semanas eu vou pegar código por amostragem e analisar. Feito isso, vou criar um vídeo anonimizando a pessoa que é dona do código, com as minhas observações e postar isso como material de suporte da funcionalidade :). 
+## Restrições
+O instante não pode ser nulo <br>
+O email é obrigatório <br>
+O email tem que ter formato válido <br>
+O nome é obrigatório <br>
+A descrição é obrigatória e não pode passar de 400 caracteres
+
+## Resultado esperado
+Um novo autor criado e status 200 retornado 
+
+## Curl para teste
+curl -X POST http://localhost:8080/autor -H 'Content-Type: application/json' -d '{"nome":"Autor", "email":"autor@gmail.com", "descricao":"descricao"}'
