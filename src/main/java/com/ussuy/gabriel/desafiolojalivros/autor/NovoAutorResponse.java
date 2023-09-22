@@ -2,12 +2,12 @@ package com.ussuy.gabriel.desafiolojalivros.autor;
 
 public class NovoAutorResponse {
 
-    private int id;
+    private Long id;
     private String nome;
     private String email;
     private String descricao;
 
-    public NovoAutorResponse(int id, String nome, String email, String descricao) {
+    public NovoAutorResponse(Long id, String nome, String email, String descricao) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -18,7 +18,7 @@ public class NovoAutorResponse {
         return new NovoAutorResponse(autor.getId(), autor.getNome(), autor.getEmail(), autor.getDescricao());
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 

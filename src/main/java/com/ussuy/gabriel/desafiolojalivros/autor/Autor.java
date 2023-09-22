@@ -18,7 +18,7 @@ public class Autor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @NotBlank
     private String nome;
     @Email
@@ -40,7 +40,7 @@ public class Autor {
         this.descricao = descricao;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
