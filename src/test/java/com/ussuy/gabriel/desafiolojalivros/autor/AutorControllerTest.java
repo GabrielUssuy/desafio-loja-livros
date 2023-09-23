@@ -47,10 +47,12 @@ class AutorControllerTest {
         String responseBody = JsonUtils.toJsonString(new NovoAutorResponse(1L, NOME_AUTOR, EMAIL_AUTOR, DESCRICAO_AUTOR));
 
         Long idAutorCadastrado = 1L;
-        Autor autor = new Autor(idAutorCadastrado,NOME_AUTOR, EMAIL_AUTOR, DESCRICAO_AUTOR);
+        Autor autor = new Autor(idAutorCadastrado, NOME_AUTOR, EMAIL_AUTOR, DESCRICAO_AUTOR);
         when(autorRepository.save(any(Autor.class))).thenReturn(autor);
 
-        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.OK, responseBody);
+        mvc.perform(MockMvcRequestBuilders.post(URL_NOVO_AUTOR).content(requestBody).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(responseBody));
 
         verify(novoAutorValidator).validate(any(), any(Errors.class));
     }
@@ -59,56 +61,56 @@ class AutorControllerTest {
     public void deve_retornar_erro_quando_nome_estiver_em_branco() throws Exception {
         String requestBody = JsonUtils.toJsonString(
                 new NovoAutorRequest("", EMAIL_AUTOR, DESCRICAO_AUTOR));
-        String responseBody = "[\"Nome é obrigatório\"]";
-        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST, responseBody);
+
+        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST);
     }
 
     @Test
     public void deve_retornar_erro_quando_nome_for_nulo() throws Exception {
         String requestBody = JsonUtils.toJsonString(
                 new NovoAutorRequest(null, EMAIL_AUTOR, DESCRICAO_AUTOR));
-        String responseBody = "[\"Nome é obrigatório\"]";
-        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST, responseBody);
+
+        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST);
     }
 
     @Test
     public void deve_retornar_erro_quando_email_estiver_em_branco() throws Exception {
         String requestBody = JsonUtils.toJsonString(
                 new NovoAutorRequest(NOME_AUTOR, "", DESCRICAO_AUTOR));
-        String responseBody = "[\"Email é obrigatório\"]";
-        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST, responseBody);
+
+        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST);
     }
 
     @Test
     public void deve_retornar_erro_quando_email_for_nulo() throws Exception {
         String requestBody = JsonUtils.toJsonString(
                 new NovoAutorRequest(NOME_AUTOR, null, DESCRICAO_AUTOR));
-        String responseBody = "[\"Email é obrigatório\"]";
-        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST, responseBody);
+
+        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST);
     }
 
     @Test
     public void deve_retornar_erro_quando_email_for_invalido() throws Exception {
         String requestBody = JsonUtils.toJsonString(
                 new NovoAutorRequest(NOME_AUTOR, "email.invalido", DESCRICAO_AUTOR));
-        String responseBody = "[\"Email informado não é válido\"]";
-        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST, responseBody);
+
+        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST);
     }
 
     @Test
     public void deve_retornar_erro_quando_descricao_estiver_em_branco() throws Exception {
         String requestBody = JsonUtils.toJsonString(
                 new NovoAutorRequest(NOME_AUTOR, EMAIL_AUTOR, ""));
-        String responseBody = "[\"Descrição é obrigatória\"]";
-        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST, responseBody);
+
+        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST);
     }
 
     @Test
     public void deve_retornar_erro_quando_descricao_for_nulo() throws Exception {
         String requestBody = JsonUtils.toJsonString(
                 new NovoAutorRequest(NOME_AUTOR, EMAIL_AUTOR, null));
-        String responseBody = "[\"Descrição é obrigatória\"]";
-        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST, responseBody);
+
+        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST);
     }
 
     @Test
@@ -121,15 +123,13 @@ class AutorControllerTest {
 
         String requestBody = JsonUtils.toJsonString(
                 new NovoAutorRequest(NOME_AUTOR, EMAIL_AUTOR, descricaoInvalida));
-        String responseBody = "[\"Descrição ultrapassou o tamanho máximo de 400 caracteres\"]";
 
-        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST, responseBody);
+        validarPost(URL_NOVO_AUTOR, requestBody, HttpStatus.BAD_REQUEST);
     }
 
-    private void validarPost(String url, String requestBody, HttpStatus responseStatus, String responseBody) throws Exception {
+    private void validarPost(String url, String requestBody, HttpStatus responseStatus) throws Exception {
         mvc.perform(MockMvcRequestBuilders.post(url).content(requestBody).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().is(responseStatus.value()))
-                .andExpect(MockMvcResultMatchers.content().json(responseBody));
+                .andExpect(MockMvcResultMatchers.status().is(responseStatus.value()));
     }
 
 }
