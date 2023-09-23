@@ -1,22 +1,19 @@
 package com.ussuy.gabriel.desafiolojalivros.autor;
 
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/autor")
+@RequestMapping("/autores")
 public class AutorController {
 
-    private final AutorRepository autorRepository;
-    private final NovoAutorValidator novoAutorValidator;
-
-    public AutorController(AutorRepository autorRepository, NovoAutorValidator novoAutorValidator) {
-        this.autorRepository = autorRepository;
-        this.novoAutorValidator = novoAutorValidator;
-    }
+    @Autowired
+    private AutorRepository autorRepository;
+    @Autowired
+    private NovoAutorValidator novoAutorValidator;
 
     @InitBinder
     public void init(WebDataBinder webDataBinder) {
@@ -25,9 +22,8 @@ public class AutorController {
 
     @PostMapping
     @Transactional
-    public NovoAutorResponse novoAutor(@RequestBody @Valid NovoAutorRequest novoAutorRequest) {
+    public NovoAutorResponse novoAutor(@Valid @RequestBody NovoAutorRequest novoAutorRequest) {
         Autor novoAutor = novoAutorRequest.toAutor();
-        autorRepository.save(novoAutor);
-        return NovoAutorResponse.from(novoAutor);
+        return NovoAutorResponse.from(autorRepository.save(novoAutor));
     }
 }

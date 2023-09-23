@@ -40,6 +40,13 @@ public class Autor {
         this.descricao = descricao;
     }
 
+    protected Autor(Long id, String nome, String email, String descricao) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.descricao = descricao;
+    }
+
     public Long getId() {
         return id;
     }

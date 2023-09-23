@@ -8,13 +8,13 @@ public class NovoAutorRequest {
 
     private static final int TAMANHO_LIMITE_DESCRICAO = 400;
 
-    @NotBlank
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
-    @Email
-    @NotBlank
+    @Email(message = "Email informado não é válido")
+    @NotBlank(message = "Email é obrigatório")
     private String email;
-    @NotBlank
-    @Size(max = TAMANHO_LIMITE_DESCRICAO)
+    @NotBlank(message = "Descrição é obrigatória")
+    @Size(max = TAMANHO_LIMITE_DESCRICAO, message = "Descrição ultrapassou o tamanho máximo de 400 caracteres")
     private String descricao;
 
     public NovoAutorRequest(@NotBlank  String nome,
@@ -29,7 +29,15 @@ public class NovoAutorRequest {
         return new Autor(nome, email, descricao);
     }
 
+    public String getNome() {
+        return nome;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public String getDescricao() {
+        return descricao;
     }
 }
