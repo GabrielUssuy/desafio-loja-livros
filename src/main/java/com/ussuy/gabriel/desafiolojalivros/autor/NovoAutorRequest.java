@@ -1,5 +1,6 @@
 package com.ussuy.gabriel.desafiolojalivros.autor;
 
+import com.ussuy.gabriel.desafiolojalivros.utils.annotation.uniquevalue.UniqueValue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -12,6 +13,7 @@ public class NovoAutorRequest {
     private String nome;
     @Email
     @NotBlank
+    @UniqueValue(domainClass = Autor.class, fieldName = "email")
     private String email;
     @NotBlank
     @Size(max = TAMANHO_LIMITE_DESCRICAO)
